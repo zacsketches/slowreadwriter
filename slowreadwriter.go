@@ -16,13 +16,13 @@ import (
 // function.
 type SlowReadWriter struct {
 	p      []byte
-	delays []int
+	Delays []int
 }
 
 // NewSlowReadWriter is the preferred way to constructe the type.
 func NewSlowReadWriter(delays []int) *SlowReadWriter {
 	srw := &SlowReadWriter{
-		delays: delays,
+		Delays: delays,
 	}
 
 	return srw
@@ -45,8 +45,8 @@ func (sr *SlowReadWriter) Write(data []byte) (n int, err error) {
 func (sr SlowReadWriter) Read(p []byte) (n int, err error) {
 	//find an index into the sr delays slice
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	idx := r.Intn(len(sr.delays))
-	delay := sr.delays[idx]
+	idx := r.Intn(len(sr.Delays))
+	delay := sr.Delays[idx]
 	t := time.NewTimer(time.Duration(delay) * time.Millisecond)
 	<-t.C //block until the timer returns
 
